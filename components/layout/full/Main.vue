@@ -37,7 +37,7 @@ const themeIcon = computed(() =>
 
   >
     <!---Logo part -->
-    <div class="pa-5">
+    <div class="pa-4">
       <LayoutFullLogo />
     </div>
     <!-- ---------------------------------------------- -->
@@ -105,7 +105,7 @@ const themeIcon = computed(() =>
       </div>
 
       <!-- RIGHT: theme, language, cart, bell, avatar -->
-      <div class="d-flex align-center ga-2">
+      <div class="d-flex align-center ga-4">
         <!-- Theme -->
         <v-btn
             icon
@@ -121,7 +121,7 @@ const themeIcon = computed(() =>
 
 
         <!-- Cart with badge -->
-        <v-badge v-if="cartCount" :content="cartCount" offset-x="2" offset-y="2">
+        <v-badge v-if="cartCount" :content="cartCount" offset-x="2" offset-y="2" color="orange" text-color="white">
           <v-btn icon variant="text" density="comfortable" aria-label="Cart" class="icon-btn">
             <v-icon size="22">mdi-cart-outline</v-icon>
           </v-btn>
