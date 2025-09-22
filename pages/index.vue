@@ -20,96 +20,10 @@
       <!-- ===== Main (Sidebar + Products) ===== -->
       <v-card variant="flat" class="rounded-xl z-auto">
         <v-row no-gutters>
-          <!-- ==== Sidebar ==== -->
-          <v-col cols="12" md="3" class="sidebar">
-            <div class="pa-5">
-              <!-- Category -->
-              <div class="section-title mb-3">Filter by Category</div>
-              <v-list nav density="comfortable" class="rounded-lg mb-6">
-                <v-list-item
-                    v-for="c in categories"
-                    :key="c.value"
-                    :value="c.value"
-                    :active="selectedCategory === c.value"
-                    @click="selectedCategory = c.value"
-                >
-                  <template #prepend>
-                    <v-icon class="mr-3">{{ c.icon }}</v-icon>
-                  </template>
-                  <v-list-item-title>{{ c.title }}</v-list-item-title>
-                </v-list-item>
-              </v-list>
 
-              <!-- Sort -->
-              <div class="section-title mb-3">Sort By</div>
-              <v-list nav density="comfortable" class="rounded-lg mb-6">
-                <v-list-item
-                    v-for="s in sortItems"
-                    :key="s.value"
-                    :active="sortBy === s.value"
-                    @click="sortBy = s.value"
-                >
-                  <template #prepend>
-                    <v-icon class="mr-3">{{ s.icon }}</v-icon>
-                  </template>
-                  <v-list-item-title>{{ s.title }}</v-list-item-title>
-                </v-list-item>
-              </v-list>
-
-              <!-- Gender -->
-              <div class="section-title mb-3">By Gender</div>
-              <div class="d-flex flex-column mb-6">
-                <v-checkbox
-                    v-for="g in genders"
-                    :key="g.value"
-                    v-model="selectedGenders"
-                    :label="g.label"
-                    :value="g.value"
-                    density="comfortable"
-                    hide-details
-                />
-              </div>
-
-              <!-- Pricing -->
-              <div class="section-title mb-3">By Pricing</div>
-              <v-radio-group v-model="priceBucket" hide-details>
-                <v-radio
-                    v-for="b in priceBuckets"
-                    :key="b.value"
-                    :label="b.label"
-                    :value="b.value"
-                    density="comfortable"
-                />
-              </v-radio-group>
-
-              <!-- Colors -->
-              <div class="section-title mt-6 mb-3">By Colors</div>
-              <div class="d-flex align-center ga-3 flex-wrap mb-6">
-                <button
-                    v-for="c in colorOptions"
-                    :key="c"
-                    class="color-dot"
-                    :class="[{ active: selectedColors.includes(c) }]"
-                    :style="{ backgroundColor: c }"
-                    @click="toggleColor(c)"
-                    aria-label="Color filter"
-                />
-              </div>
-
-              <v-btn
-                  variant="outlined"
-                  color="primary"
-                  block
-                  class="mt-2"
-                  @click="resetFilters"
-              >
-                Reset Filters
-              </v-btn>
-            </div>
-          </v-col>
 
           <!-- ==== Products ==== -->
-          <v-col cols="12" md="9" class="body-container" >
+          <v-col cols="12" md="12" class="body-container" >
             <div class="pa-5">
               <div class="d-flex align-center justify-space-between mb-4">
                 <div class="h4 mb-0">Products</div>
@@ -234,27 +148,7 @@ const priceBucket = ref<PriceBucket>('all')
 const selectedColors = ref<string[]>([])
 const visibleCount = ref(12)
 
-const categories = [
-  { title: 'All', value: 'all', icon: 'mdi-shape-outline' },
-  { title: 'Fashion', value: 'fashion', icon: 'mdi-hanger' },
-  { title: 'Books', value: 'books', icon: 'mdi-book-open-variant' },
-  { title: 'Toys', value: 'toys', icon: 'mdi-puzzle-outline' },
-  { title: 'Electronics', value: 'electronics', icon: 'mdi-monitor' },
-]
 
-const sortItems = [
-  { title: 'Newest', value: 'newest', icon: 'mdi-history' },
-  { title: 'Price: High–Low', value: 'price_high', icon: 'mdi-arrow-down-bold' },
-  { title: 'Price: Low–High', value: 'price_low', icon: 'mdi-arrow-up-bold' },
-  { title: 'Discounted', value: 'discounted', icon: 'mdi-sale-outline' },
-]
-
-const genders = [
-  { label: 'All', value: 'all' },
-  { label: 'Men', value: 'men' },
-  { label: 'Women', value: 'women' },
-  { label: 'Kids', value: 'kids' },
-]
 
 const priceBuckets: { label: string; value: PriceBucket; min?: number; max?: number }[] = [
   { label: 'All', value: 'all' },
@@ -264,13 +158,11 @@ const priceBuckets: { label: string; value: PriceBucket; min?: number; max?: num
   { label: 'Over 200', value: '200+', min: 200 },
 ]
 
-const colorOptions = ['#000000', '#f44336', '#ff9800', '#fdd835', '#4caf50', '#03a9f4', '#9c27b0', '#9e9e9e']
+
 
 const products = ref<Product[]>([
-  { id: 1,  name: 'Super Games',     image: 'https://images.unsplash.com/photo-1605901309584-818e25960a8b?q=80&w=1300&auto=format&fit=crop', price: 285, oldPrice: 345, rating: 4.6, reviews: 320, category: 'toys',        gender: 'kids',   colors: ['#000000', '#03a9f4'] },
   { id: 2,  name: 'Derma-E',         image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1200&auto=format&fit=crop', price: 650, oldPrice: 900, rating: 4.8, reviews: 210, category: 'electronics', gender: 'women', colors: ['#9e9e9e'] },
   { id: 3,  name: 'SockSoho',        image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop',   price: 25,  oldPrice: 31,  rating: 4.3, reviews: 112, category: 'fashion',    gender: 'men',   colors: ['#000000', '#f44336', '#03a9f4'] },
-  { id: 4,  name: 'Glossy Solution', image: 'https://images.unsplash.com/photo-1518441902110-0f1e1a8f6b27?q=80&w=1200&auto=format&fit=crop', price: 50,  oldPrice: 65,  rating: 4.4, reviews: 61,  category: 'electronics', gender: 'women', colors: ['#ff9800', '#fdd835'] },
   { id: 5,  name: 'Supercolor 645CL',image: 'https://images.unsplash.com/photo-1545235617-9465d2a55698?q=80&w=1200&auto=format&fit=crop',   price: 210, oldPrice: 250, rating: 4.7, reviews: 188, category: 'toys',        gender: 'kids',   colors: ['#4caf50'] },
   { id: 6,  name: 'Polraid One Step',image: 'https://images.unsplash.com/photo-1519744792095-2f2205e87b6f?q=80&w=1200&auto=format&fit=crop', price: 150, oldPrice: 200, rating: 4.5, reviews: 91,  category: 'fashion',    gender: 'women', colors: ['#9c27b0'] },
   { id: 7,  name: 'Colorful Camera', image: 'https://images.unsplash.com/photo-1495707902655-43e5f7c631ad?q=80&w=1200&auto=format&fit=crop', price: 300, oldPrice: 380, rating: 4.6, reviews: 77,  category: 'electronics', gender: 'men',   colors: ['#f44336', '#000000'] },
@@ -317,26 +209,12 @@ const sortedProducts = computed(() => {
 })
 const paginated = computed(() => sortedProducts.value.slice(0, visibleCount.value))
 
-/* ===== Helpers ===== */
-function toggleColor(c: string) {
-  const i = selectedColors.value.indexOf(c)
-  if (i >= 0) selectedColors.value.splice(i, 1)
-  else selectedColors.value.push(c)
-}
-function resetFilters() {
-  search.value = ''
-  selectedCategory.value = 'all'
-  sortBy.value = 'newest'
-  selectedGenders.value = ['all']
-  priceBucket.value = 'all'
-  selectedColors.value = []
-  visibleCount.value = 12
-}
+
 function formatUSD(n: number) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n)
 }
 
-/* mock add-to-cart */
+
 const snackbar = ref({ show: false, text: '' })
 function addToCart(p: Product) {
   snackbar.value = { show: true, text: `${p.name} added to cart.` }
@@ -344,10 +222,7 @@ function addToCart(p: Product) {
 </script>
 
 <style scoped>
-/* Layout */
-.sidebar {
-  border: 1px solid rgba(var(--v-theme-on-surface), 0.06);
-}
+
 .body-container {
   border: 1px solid rgba(var(--v-theme-on-surface), 0.06);
 }
@@ -370,12 +245,7 @@ function addToCart(p: Product) {
   box-shadow: 0 2px 8px rgba(0,0,0,.15);
 }
 
-/* Cart FAB (top-right over image) */
-.cart-fab {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-}
+
 
 /* Color dots */
 .color-dot {
