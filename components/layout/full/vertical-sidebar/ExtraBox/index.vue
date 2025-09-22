@@ -3,7 +3,7 @@
         <div class="d-flex align-center">
             <div class="side-profile-text">
                 <h6 class="text-h6 mb-2">Check this shit out</h6>
-                <v-btn href="https://google.com" target="_blank" size="small" color="primary" flat>Check</v-btn>
+                <v-btn href="https://google.com.com" target="_blank" size="small" color="primary" flat>Check</v-btn>
             </div>
             <div class="mt-n7 ml-2">
                 <img src="/images/background/rocket.png" class="side-profile" />
