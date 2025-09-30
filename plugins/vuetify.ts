@@ -11,12 +11,6 @@ import { DarkTheme } from '@/theme/DarkTheme'
 type ThemeName = 'LightTheme' | 'DarkTheme'
 
 function getInitialTheme(): ThemeName {
-    if (process.client) {
-        const saved = localStorage.getItem('theme') as ThemeName | null
-        if (saved === 'LightTheme' || saved === 'DarkTheme') return saved
-        const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches
-        return prefersDark ? 'DarkTheme' : 'LightTheme'
-    }
     return 'LightTheme'
 }
 

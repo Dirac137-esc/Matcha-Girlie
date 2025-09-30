@@ -19,7 +19,10 @@ export default defineNuxtConfig({
   nitro: {
     serveStatic: true,
   },
+    public: {
+        base_url: process.env.BASE_URL,
 
+    },
   devServerHandlers: [],
 
   hooks: {

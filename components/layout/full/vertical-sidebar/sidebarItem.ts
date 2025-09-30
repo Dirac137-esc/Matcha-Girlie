@@ -73,6 +73,16 @@ const sidebarItem: menu[] = [
 
     { header: "Борлуулалт" },
     {
+        title: "Details",
+        icon: AlertHexagonIcon,
+        to: "/detail",
+    },
+    {
+        title: "Orders",
+        icon: AlertHexagonIcon,
+        to: "/order",
+    },
+    {
         title: "Захиалга",
         icon: AlertHexagonIcon,
         to: "/ui-components/alerts",

@@ -1,47 +1,48 @@
 import type { ThemeTypes } from '@/types/themeTypes/ThemeType'
 
 const LightTheme: ThemeTypes = {
-    name: 'LightTheme',
+    name: 'MatchaLight',
     dark: false,
     variables: {
-        'border-color': '#E5EAEF',
+        'border-color': '#E3EAE4',
         'carousel-control-size': 10,
     },
     colors: {
-        // Brand (matches the light screenshot)
-        primary:   '#237195',
-        secondary: '#49BEFF',
-        info:      '#539BFF',
-        success:   '#13DEB9',
-        accent:    '#FFAB91',
-        warning:   '#FFAE1F',
-        error:     '#FA896B',
-        muted:     '#5A6A85',
+        // Brand
+        primary:   '#2F7B54', // deep matcha
+        secondary: '#8FD19E', // mint accent
+        info:      '#6CB9A8', // tea-water teal
+        success:   '#2CB67D', // fresh herb
+        accent:    '#E4CDA7', // toasted sesame / cream
+        warning:   '#E8B24C', // yuzu gold
+        error:     '#E46C5A', // clay red
+        muted:     '#5C6F64', // sage gray
 
-        // Tinted backgrounds for chips/badges/etc.
-        lightprimary:   '#ECF2FF',
-        lightsecondary: '#E8F7FF',
-        lightsuccess:   '#E6FFFA',
-        lighterror:     '#FDEDE8',
-        lightwarning:   '#FEF5E5',
+        // Tinted backgrounds
+        lightprimary:   '#EAF6EF',
+        lightsecondary: '#ECF8F0',
+        lightsuccess:   '#EAFBF4',
+        lighterror:     '#FCEDEA',
+        lightwarning:   '#FFF6E5',
 
         // Text & chrome
-        textPrimary:   '#2A3547',
-        textSecondary: '#5A6A85',
-        borderColor:   '#E5EAEF',
-        inputBorder:   '#D7DEE6',
-       lightlight:   'rgb(217,231,237)',
-        // Surfaces (white cards on very light canvas)
-        background:  '#FFFFFF',  // page canvas (very light blue-grey from screenshot)
-        containerBg: '#FFFFFF',   // app shell
-        surface:     '#FFFFFF',   // cards/sheets
-        hoverColor:  '#F6F9FC',
-        'on-surface-variant': '#EEF2F6', // subtle dividers / pressed
+        textPrimary:   '#24322B', // evergreen
+        textSecondary: '#5C6F64', // sage
+        borderColor:   '#E3EAE4',
+        inputBorder:   '#D6E2DA',
+        lightlight:    '#E8F2EC', // soft matcha mist
 
-        // Extras used across the template
-        grey100: '#F6F9FC',
-        grey200: '#EEF2F6',
-        rating:  '#FFB22B', // star color seen in cards
+        // Surfaces
+        background:  '#FFFFFF', // warm off-white with a hint of green
+        containerBg: '#FFFFFF',
+        surface:     '#FFFFFF',
+        hoverColor:  '#F3F7F3',
+        'on-surface-variant': '#EEF4EF',
+
+        // Extras
+        grey100: '#F3F7F3',
+        grey200: '#E7EEE9',
+        rating:  '#FFB22B', // star color
     },
 }
 

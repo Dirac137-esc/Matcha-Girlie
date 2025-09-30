@@ -1,27 +1,33 @@
 <script setup lang="ts">
-import { ref, shallowRef, computed } from "vue";
-import sidebarItems from "@/components/layout/full/vertical-sidebar/sidebarItem";
-import { Menu2Icon } from "vue-tabler-icons";
-import { PerfectScrollbar } from "vue3-perfect-scrollbar";
-import { useThemeSwitcher } from '@/composables/useThemeSwitcher'
+import { ref, shallowRef, computed } from 'vue'
+import sidebarItems from '@/components/layout/full/vertical-sidebar/sidebarItem'
+import { Menu2Icon } from 'vue-tabler-icons'
+import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
+import { useCart } from '@/composables/useCart'
 
-const sidebarMenu = shallowRef(sidebarItems);
-const sDrawer = ref(true);
+const sidebarMenu = shallowRef(sidebarItems)
+const sDrawer = ref(true)
 
-const { toggle, label } = useThemeSwitcher();
+/* === Cart store === */
+const {
+  items: cartItems,
+  count: cartCount,
+  subtotal,
+  drawer: cartDrawer,
+  inc, dec, removeItem, toggleDrawer
+} = useCart()
 
-const cartCount = ref(2);
-const hasNewNotifs = ref(true);
+const toggleCartDrawer = toggleDrawer
 
-const cartDrawer = ref(false);
-const toggleCartDrawer = () => (cartDrawer.value = !cartDrawer.value);
+const hasNewNotifs = ref(true)
+const newCount = ref(5)
 
-const themeIcon = computed(() =>
-    String(label?.value ?? '').toLowerCase().includes('dark')
-        ? 'mdi-moon-waxing-crescent'
-        : 'mdi-weather-sunny'
-);
+const money = (n: number) =>
+    new Intl.NumberFormat('mn-MN', { style: 'currency', currency: 'MNT', minimumFractionDigits: 0 }).format(n)
+
+const total = computed(() => subtotal.value)
 </script>
+
 
 <template>
   <!-- Sidebar -->
@@ -64,10 +70,7 @@ const themeIcon = computed(() =>
 
       <!-- RIGHT: theme, cart, notifications, avatar -->
       <div class="d-flex align-center ga-4">
-        <!-- Theme -->
-        <v-btn icon variant="text" density="comfortable" aria-label="Toggle theme" @click="toggle()" class="icon-btn">
-          <v-icon size="22">{{ themeIcon }}</v-icon>
-        </v-btn>
+
 
         <!-- Cart -->
         <v-badge
@@ -78,7 +81,7 @@ const themeIcon = computed(() =>
             text-color="white"
             v-if="cartCount !== null"
         >
-          <v-btn icon variant="text" density="comfortable" aria-label="Cart" class="icon-btn" @click="toggleCartDrawer">
+          <v-btn  id="cart-btn"  icon variant="text" density="comfortable" aria-label="Cart" class="icon-btn" @click="toggleCartDrawer">
             <v-icon size="22">mdi-cart-outline</v-icon>
           </v-btn>
         </v-badge>
@@ -102,15 +105,90 @@ const themeIcon = computed(() =>
     </div>
   </v-app-bar>
 
-  <!-- Cart Drawer -->
-  <v-navigation-drawer v-model="cartDrawer" temporary location="right">
-    <v-list-item prepend-avatar="https://randomuser.me/api/portraits/men/78.jpg" title="John Leider"></v-list-item>
-    <v-divider></v-divider>
-    <v-list density="compact" nav>
-      <v-list-item prepend-icon="mdi-view-dashboard" title="Home" value="home"></v-list-item>
-      <v-list-item prepend-icon="mdi-forum" title="About" value="about"></v-list-item>
-    </v-list>
+
+  <v-navigation-drawer
+      v-model="cartDrawer"
+      temporary
+      location="right"
+      width="360"
+      elevation="10"
+      class="cart-drawer cart-drawer--compact"
+  >
+    <!-- Header -->
+    <div class="d-flex align-center justify-space-between px-4 pr-6 py-4">
+      <div class="text-subtitle-1 font-weight-bold">Таны сагс</div>
+      <div class="d-flex align-center ga-2">
+        <v-chip v-if="cartCount" size="medium" color="primary" text-color="white" class="px-3" label>
+          {{ cartCount }} шинэ
+        </v-chip>
+
+      </div>
+    </div>
+
+    <v-divider class="mb-1" />
+
+    <!-- Items -->
+    <div class="px-4">
+      <div v-for="it in cartItems" :key="it.id" class="d-flex ga-3 align-start py-3">
+        <v-avatar size="64" rounded="lg" class="elevation-1">
+          <v-img :src="it.img" alt="" cover />
+        </v-avatar>
+
+        <div class="flex-grow-1 min-w-0">
+          <div class="text-body-2 font-weight-medium text-truncate">{{ it.title }}</div>
+          <div class="text-caption text-medium-emphasis mb-2">{{ it.subtitle }}</div>
+
+          <div class="d-flex align-center justify-space-between">
+            <div class="text-body-2 font-weight-medium">{{ money(it.price) }}</div>
+
+            <!-- XS qty controls -->
+            <div class="d-flex align-center ga-1">
+              <v-btn class="qty-btn--xs" variant="tonal" color="surface-variant" @click="dec(it.id)">
+                <v-icon size="14">mdi-minus</v-icon>
+              </v-btn>
+              <v-sheet class="qty-value--xs">{{ it.qty }}</v-sheet>
+              <v-btn class="qty-btn--xs" variant="tonal" color="surface-variant" @click="inc(it.id)">
+                <v-icon size="14">mdi-plus</v-icon>
+              </v-btn>
+            </div>
+          </div>
+        </div>
+
+        <!-- Remove -->
+        <v-btn icon variant="text" color="error" size="small" @click="removeItem(it.id)">
+          <v-icon size="16">mdi-close</v-icon>
+        </v-btn>
+      </div>
+    </div>
+    <div v-if="!cartItems.length" class="text-body-2 text-medium-emphasis py-6 text-center">
+      Сагс хоосон байна.
+    </div>
+
+    <v-divider class="my-2" />
+
+    <!-- Totals -->
+    <!-- Totals -->
+    <div class="px-4 pb-4 pt-2">
+      <div class="d-flex align-center justify-space-between mb-4">
+        <div class="text-body-2 text-medium-emphasis">Нийт</div>
+        <div class="text-subtitle-1 font-weight-bold">{{ money(subtotal) }}</div>
+      </div>
+
+      <v-btn
+          block
+          variant="outlined"
+          color="primary"
+          class="rounded-lg text-none py-3"
+          :disabled="!cartItems.length"
+          @click="cartDrawer = false; $router.push('/order')"
+      >
+        Худалдан авах
+      </v-btn>
+    </div>
+
   </v-navigation-drawer>
+
+
 </template>
 
 <style scoped>
@@ -132,4 +210,35 @@ const themeIcon = computed(() =>
   line-height: 1;
   display: inline-block;
 }
+.cart-drawer--compact :deep(.v-navigation-drawer__content){
+  border-top-left-radius: 18px;
+  border-bottom-left-radius: 18px;
+}
+
+/* smaller +/- buttons */
+.qty-btn--xs{
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  min-width: 24px; /* keep Vuetify from stretching */
+  padding: 0;
+}
+.qty-value--xs{
+  min-width: 26px;
+  height: 24px;
+  border: 1px solid rgba(var(--v-theme-outline), .22);
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* give the close button room from the right wall */
+.close-btn{
+  margin-right: 8px;  /* extra breathing room */
+}
+
+
 </style>

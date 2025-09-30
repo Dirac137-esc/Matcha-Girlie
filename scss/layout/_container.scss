@@ -2,12 +2,15 @@ html { overflow-y: auto; }
 
 .v-main {
   margin-top: 70px;
-  margin-right: 20px;
+  margin-right: 10px;
+  margin-left: 10px;
   --v-layout-top: 0 !important;
 }
 
 @media (max-width: 1279px) {
-  .v-main { margin: 0 10px; }
+  .v-main {
+    margin: 70px 10px 0;
+  }
 }
 
 .spacer { padding: 100px 0; }
@@ -15,15 +18,9 @@ html { overflow-y: auto; }
 
 .cursor-pointer { cursor: pointer; }
 
-.page-wrapper {
-  min-height: calc(100vh - 100px);
-  padding: 24px;
-  padding-bottom: 30px;
 
-  @media screen and (max-width:600px){ padding: 10px; }
-}
 
-.maxWidth { max-width: 1400px; margin: 0 auto; }
+.maxWidth { max-width: 1600px; margin: 0 auto; }
 
 $sizes: (
         'display-1': 44px,
